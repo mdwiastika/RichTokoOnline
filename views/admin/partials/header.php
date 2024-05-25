@@ -4,6 +4,9 @@ if (!isset($_SESSION['user'])) {
     header('Location: /auth/login.php');
     exit;
 }
+if (!in_array($_SESSION['user']['role'], ['admin', 'super admin'])) {
+    header('Location: /');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en"> <!--begin::Head-->

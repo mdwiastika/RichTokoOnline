@@ -29,6 +29,10 @@
                          </li>
                      </ul>
                  </li>
+                 <li class="nav-item"> <a href="/auth/logout.php" class="nav-link"> <i class="nav-icon bi bi-door-closed"></i>
+                         <p>Logout</p>
+                     </a>
+                 </li>
              </ul>
          </nav>
      </div>

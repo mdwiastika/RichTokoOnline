@@ -6,7 +6,7 @@ $user = $pdo->query("SELECT * FROM users WHERE email = '$email' AND password = '
 if ($user) {
     session_start();
     $_SESSION['user'] = $user;
-    if ($user['role'] == 'admin') {
+    if ($user['role'] == 'admin' || $user['role'] == 'super admin') {
         header('Location: /admin/dashboard');
     } else {
         header('Location: /');
