@@ -1,10 +1,11 @@
 <?php
 $copyright = 'MdwiShop';
 $title = 'Manajemen User';
+$sub_title = 'Manajemen User';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
-$users = $pdo->query('SELECT * FROM users')->fetchAll();
+$users = $pdo->query("SELECT * FROM users WHERE NOT role = 'super admin'")->fetchAll();
 ?>
 <style>
     .dt-input {
@@ -35,6 +36,7 @@ $users = $pdo->query('SELECT * FROM users')->fetchAll();
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 bg-white p-3 shadow-sm">
+                    <a href="/admin/users/create.php" class="btn btn-success mb-3"><i class="bi bi-plus-lg"></i> Create Data</a>
                     <table id="manajemen-table" class="display">
                         <thead>
                             <tr>

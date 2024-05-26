@@ -19,11 +19,11 @@
                          </p>
                      </a>
                      <ul class="nav nav-treeview">
-                         <li class="nav-item"> <a href="/admin/users" class="nav-link <?= $title == 'Manajemen User' ? 'active' : '' ?>"> <i class="nav-icon bi bi-circle"></i>
+                         <li class="nav-item"> <a href="/admin/users" class="nav-link <?= $sub_title == 'Manajemen User' ? 'active' : '' ?>"> <i class="nav-icon bi bi-circle"></i>
                                  <p>Data User</p>
                              </a>
                          </li>
-                         <li class="nav-item"> <a href="/admin/users/create.php" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                         <li class="nav-item"> <a href="/admin/users/create.php" class="nav-link <?= $sub_title == 'Create User' ? 'active' : '' ?>"> <i class="nav-icon bi bi-circle"></i>
                                  <p>Create User</p>
                              </a>
                          </li>
