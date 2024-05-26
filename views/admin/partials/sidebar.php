@@ -29,6 +29,23 @@
                          </li>
                      </ul>
                  </li>
+                 <li class="nav-item <?= $title == 'Manajemen Parent Categories' ? 'menu-open' : '' ?>"> <a href="#" class="nav-link"> <i class="nav-icon bi bi-bounding-box"></i>
+                         <p>
+                             Parent Category
+                             <i class="nav-arrow bi bi-chevron-right"></i>
+                         </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                         <li class="nav-item"> <a href="/admin/parent-categories" class="nav-link <?= $sub_title == 'Manajemen Parent Categories' ? 'active' : '' ?>"> <i class="nav-icon bi bi-circle"></i>
+                                 <p>Data Parent Category</p>
+                             </a>
+                         </li>
+                         <li class="nav-item"> <a href="/admin/parent-categories/create.php" class="nav-link <?= $sub_title == 'Create Parent Categories' ? 'active' : '' ?>"> <i class="nav-icon bi bi-circle"></i>
+                                 <p>Create Parent Category</p>
+                             </a>
+                         </li>
+                     </ul>
+                 </li>
                  <li class="nav-item"> <a href="/auth/logout.php" class="nav-link"> <i class="nav-icon bi bi-door-closed"></i>
                          <p>Logout</p>
                      </a>

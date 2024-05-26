@@ -25,6 +25,16 @@ if (!in_array($_SESSION['user']['role'], ['admin', 'super admin'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css" integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous"><!--end::Third Party Plugin(Bootstrap Icons)--><!--begin::Required Plugin(AdminLTE)-->
   <link rel="stylesheet" href="/admin/assets/css/adminlte.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous">
+  <style>
+    .img-rounded {
+      width: 100px;
+      height: 100px;
+      margin-top: 1em;
+      object-fit: cover;
+      border-radius: 1.3em;
+      display: none;
+    }
+  </style>
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
