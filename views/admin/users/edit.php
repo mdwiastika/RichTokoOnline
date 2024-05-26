@@ -97,4 +97,3 @@ $user = $pdo->query("SELECT * FROM users WHERE id = '$id'")->fetch();
 <?php
 include_once './../partials/footer.php';
 ?>
-</script>

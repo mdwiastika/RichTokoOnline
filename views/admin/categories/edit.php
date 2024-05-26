@@ -1,13 +1,14 @@
 <?php
 $copyright = 'MdwiShop';
-$title = 'Manajemen Parent Categories';
-$sub_title = 'Create Parent Categories';
+$title = 'Manajemen Categories';
+$sub_title = 'Create Categories';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
 $id = $_GET['id'];
-$parent_category = $pdo->query("SELECT * FROM parent_categories WHERE id_parent_category = '$id'")->fetch();
+$category = $pdo->query("SELECT * FROM categories c INNER JOIN parent_categories pc ON c.parent_category_id = pc.id_parent_category WHERE id_category = '$id'")->fetch();
 ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <main class="app-main">
     <div class="app-content-header">
         <div class="container-fluid">
@@ -29,9 +30,9 @@ $parent_category = $pdo->query("SELECT * FROM parent_categories WHERE id_parent_
     <div class="app-content">
         <div class="container-fluid">
             <div class="row">
-                <form class="card card-success card-outline mb-4" method="POST" action="./post-edit.php" enctype="multipart/form-data">
+                <form class="card card-warning card-outline mb-4" method="POST" action="./post-edit.php" enctype="multipart/form-data">
                     <div class="card-header">
-                        <div class="card-title fw-bold">Edit Parent Category</div>
+                        <div class="card-title fw-bold">Edit Category</div>
                     </div>
                     <div class="card-body row">
                         <?php
@@ -45,19 +46,26 @@ $parent_category = $pdo->query("SELECT * FROM parent_categories WHERE id_parent_
                             unset($_SESSION['error']);
                         endif;
                         ?>
-                        <input type="hidden" name="id_parent_category" value="<?= $parent_category['id_parent_category'] ?>">
-                        <div class="mb-3 col-12 col-md-6">
-                            <label for="name_parent_category" class="form-label">Name</label>
-                            <input type="text" name="name_parent_category" value="<?= $parent_category['name_parent_category'] ?>" class="form-control" id="name_parent_category" placeholder="Enter Name">
+                        <input type="hidden" name="id_category" value="<?= $category['id_category'] ?>">
+                        <div class="mb-3 col-12">
+                            <label for="parent_category_id" class="form-label">Parent Category</label>
+                            <select name="parent_category_id" id="parent_category_id" class="form-control">
+                                <option value="" disabled>.:: Pilih Kategori Terlebih Dahulu ::.</option>
+                                <option value="<?= $category['parent_category_id'] ?>" selected><?= $category['name_parent_category'] ?></option>
+                            </select>
                         </div>
                         <div class="mb-3 col-12 col-md-6">
-                            <label for="icon_parent_category" class="form-label">Icon Parent Category</label>
-                            <input type="file" accept="image/*" name="icon_parent_category" class="form-control" id="icon_parent_category" placeholder="Enter Icon_parent_category">
-                            <img src="<?= $parent_category['icon_parent_category'] ?>" alt="" class="img-rounded d-block" id="show-img">
+                            <label for="name_category" class="form-label">Name</label>
+                            <input type="text" name="name_category" value="<?= $category['name_category'] ?>" class="form-control" id="name_category" placeholder="Enter Name">
+                        </div>
+                        <div class="mb-3 col-12 col-md-6">
+                            <label for="icon_category" class="form-label">Icon Category</label>
+                            <input type="file" accept="image/*" name="icon_category" class="form-control" id="icon_category" placeholder="Enter Icon_category">
+                            <img src="<?= $category['icon_category'] ?>" alt="" class="img-rounded d-block" id="show-img">
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="/admin/parent-categories" class="btn btn-warning">Kembali</a>
+                        <a href="/admin/categories" class="btn btn-warning">Kembali</a>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div> <!--end::Footer-->
                 </form>
@@ -68,8 +76,10 @@ $parent_category = $pdo->query("SELECT * FROM parent_categories WHERE id_parent_
 <?php
 include_once './../partials/footer.php';
 ?>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    const iconParentCategory = document.querySelector('#icon_parent_category');
+    const iconParentCategory = document.querySelector('#icon_category');
     const showImg = document.querySelector('#show-img');
 
     function showImage() {
@@ -86,4 +96,27 @@ include_once './../partials/footer.php';
     iconParentCategory.addEventListener('change', function() {
         showImage();
     });
+    $('#parent_category_id').select2({
+        ajax: {
+            url: '/api/get-parent-categories.php',
+            data: function(params) {
+                let query = {
+                    search: params.term,
+                    type: 'public'
+                }
+                return query;
+            },
+            processResults: function(data) {
+                let json_data = JSON.parse(data);
+                return {
+                    results: json_data.map(function(item) {
+                        return {
+                            id: item.id_parent_category,
+                            text: item.name_parent_category
+                        }
+                    })
+                }
+            }
+        }
+    })
 </script>

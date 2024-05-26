@@ -5,7 +5,7 @@ $sub_title = 'Manajemen User';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
-$users = $pdo->query("SELECT * FROM users WHERE NOT role = 'super admin'")->fetchAll();
+$users = $pdo->query("SELECT * FROM users WHERE NOT role = 'super admin' ORDER BY id")->fetchAll();
 ?>
 <style>
     .dt-input {

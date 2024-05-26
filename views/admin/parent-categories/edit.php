@@ -29,7 +29,7 @@ $parent_category = $pdo->query("SELECT * FROM parent_categories WHERE id_parent_
     <div class="app-content">
         <div class="container-fluid">
             <div class="row">
-                <form class="card card-success card-outline mb-4" method="POST" action="./post-edit.php" enctype="multipart/form-data">
+                <form class="card card-warning card-outline mb-4" method="POST" action="./post-edit.php" enctype="multipart/form-data">
                     <div class="card-header">
                         <div class="card-title fw-bold">Edit Parent Category</div>
                     </div>
