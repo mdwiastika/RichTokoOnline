@@ -61,7 +61,7 @@ $users = $pdo->query("SELECT * FROM users WHERE NOT role = 'super admin'")->fetc
                                     <td><?= $user['role'] ?></td>
                                     <td>
                                         <a href="/admin/users/edit.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/users/delete.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/users/delete.php?id=<?= $user['id'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
@@ -83,4 +83,14 @@ include_once './../partials/footer.php';
     $(document).ready(function() {
         $('#manajemen-table').DataTable();
     });
+
+    function confirmDelete(message) {
+        const result = confirm(message);
+        if (result) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 </script>

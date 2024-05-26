@@ -2,7 +2,7 @@
 session_start();
 include_once './../../connection/connection.php';
 include_once './../validation/validation-form.php';
-$upload_directory = '/uploads/parent-categories/';
+$upload_directory = '/uploads/';
 $name = $_POST['name_parent_category'];
 $icon = $_FILES['icon_parent_category'];
 $slug = strtolower(str_replace(' ', '-', $name));

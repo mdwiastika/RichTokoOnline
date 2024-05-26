@@ -1,11 +1,11 @@
 <?php
 $copyright = 'MdwiShop';
-$title = 'Manajemen Parent Categories';
-$sub_title = 'Manajemen Parent Categories';
+$title = 'Manajemen Categories';
+$sub_title = 'Manajemen Categories';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
-$parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_parent_category")->fetchAll();
+$categories = $pdo->query("SELECT * FROM categories c INNER JOIN parent_categories pc ON c.parent_category_id = pc.id_parent_category")->fetchAll();
 ?>
 <style>
     .dt-input {
@@ -42,6 +42,7 @@ $parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_pa
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
+                                <th>Parent Category</th>
                                 <th>Icon</th>
                                 <th>Slug</th>
                                 <th>Action</th>
@@ -50,16 +51,17 @@ $parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_pa
                         <tbody>
                             <?php
                             $no = 1;
-                            foreach ($parent_categories as $parent_category) {
+                            foreach ($categories as $category) {
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><?= $parent_category['name_parent_category'] ?></td>
-                                    <td><img src="<?= $parent_category['icon_parent_category'] ?>" alt="" class="img-rounded d-block"></td>
-                                    <td><?= $parent_category['slug_parent_category'] ?></td>
+                                    <td><?= $category['name_category'] ?></td>
+                                    <td><?= $category['name_parent_category'] ?></td>
+                                    <td><img src="<?= $category['icon_category'] ?>" alt="" class="img-rounded d-block"></td>
+                                    <td><?= $category['slug_category'] ?></td>
                                     <td>
-                                        <a href="/admin/parent-categories/edit.php?id=<?= $parent_category['id_parent_category'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/parent-categories/delete.php?id=<?= $parent_category['id_parent_category'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/parent-categories/edit.php?id=<?= $category['id_category'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
+                                        <a href="/admin/parent-categories/delete.php?id=<?= $category['id_category'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
