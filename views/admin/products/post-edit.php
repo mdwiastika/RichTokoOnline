@@ -59,7 +59,7 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
     if ($variant_product_id == '') {
         if ($img_variant_products[$i] != '') {
             $img_variant_product = $_FILES['img_variant_product'];
-            $file_name = hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
+            $file_name = time() . hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
             $upload_file = $upload_directory . $file_name;
             $upload_check = move_uploaded_file($img_variant_product['tmp_name'][$i], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
             if ($upload_check) {
@@ -80,7 +80,7 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
     } else {
         if ($img_variant_products[$i] != '') {
             $img_variant_product = $_FILES['img_variant_product'];
-            $file_name = hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
+            $file_name = time() . hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
             $upload_file = $upload_directory . $file_name;
             $upload_check = move_uploaded_file($img_variant_product['tmp_name'][$i], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
             if ($upload_check) {
