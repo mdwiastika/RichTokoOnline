@@ -127,17 +127,17 @@ $transaction = $pdo->query("SELECT * FROM transactions t
                             </div>
                             <div class="">
                                 <?php if ($transaction['status'] == 'Pending') : ?>
-                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Confirmed" class="btn btn-success">Confirm</a>
+                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Confirmed" class="btn btn-success" onclick="confirmAction(event, 'Confirm')">Confirm</a>
                                 <?php elseif ($transaction['status'] == 'Confirmed') : ?>
-                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Shipped" class="btn btn-primary">Shipped</a>
+                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Shipped" class="btn btn-primary" onclick="confirmAction(event, 'Shipped')">Shipped</a>
                                 <?php elseif ($transaction['status'] == 'Shipped') : ?>
-                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Delivered" class="btn btn-success">Delivered</a>
+                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Delivered" class="btn btn-success" onclick="confirmAction(event, 'Delivered')">Delivered</a>
                                 <?php elseif ($transaction['status'] == 'Delivered') : ?>
-                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Return" class="btn btn-danger">Return</a>
+                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Return" class="btn btn-danger" onclick="confirmAction(event, 'Return')">Return</a>
                                 <?php endif; ?>
                                 <?php
                                 if ($transaction['status'] == 'Pending' || $transaction['status'] == 'Confirmed' || $transaction['status'] == 'Shipped' || $transaction['status'] == 'Delivered') {  ?>
-                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Cancelled" class="btn btn-danger">Cancel</a>
+                                    <a href="/admin/transactions/action.php?id=<?= $transaction['id_transaction'] ?>&status=Cancelled" class="btn btn-danger" onclick="confirmAction(event, 'Cancel')">Cancel</a>
                                 <?php } ?>
                             </div>
                         </div>
@@ -170,27 +170,20 @@ include_once './../partials/footer.php';
     iconParentCategory.addEventListener('change', function() {
         showImage();
     });
-    $('#parent_category_id').select2({
-        ajax: {
-            url: '/api/get-parent-categories.php',
-            data: function(params) {
-                let query = {
-                    search: params.term,
-                    type: 'public'
-                }
-                return query;
-            },
-            processResults: function(data) {
-                let json_data = JSON.parse(data);
-                return {
-                    results: json_data.map(function(item) {
-                        return {
-                            id: item.id_parent_category,
-                            text: item.name_parent_category
-                        }
-                    })
-                }
+
+    function confirmAction(element, action) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Do you want to ${action} this data?`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = element.target.href;
             }
-        }
-    })
+        });
+    }
 </script>

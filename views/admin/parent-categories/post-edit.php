@@ -16,7 +16,7 @@ if ($check_name) {
 validation_form($name, 'Name Field is required', "/admin/parent-categories/edit.php?id=$id");
 if ($icon['name'] != '') {
     validation_form($icon, 'Icon Field is required', "/admin/parent-categories/edit.php?id=$id");
-    $file_name = hash('sha256', $icon['name']) . '_' . $icon['name'];
+    $file_name = hash('sha256', $icon['name'] . microtime()) . '_' . $icon['name'];
     $upload_file = $upload_directory . $file_name;
     $upload_check = move_uploaded_file($icon['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
     if ($upload_check) {
@@ -29,6 +29,11 @@ if ($icon['name'] != '') {
     }
 } else {
     $sql = "UPDATE parent_categories SET name_parent_category = '$name', slug_parent_category = '$slug' WHERE id_parent_category = '$id'";
-    $pdo->query($sql);
+    $result = $pdo->query($sql);
+    if ($result) {
+        $_SESSION['success'] = 'Parent Category successfully updated';
+    } else {
+        $_SESSION['error'] = 'Failed to update parent category';
+    }
     header('Location: /admin/parent-categories');
 }

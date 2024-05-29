@@ -5,7 +5,7 @@ $sub_title = 'Manajemen Categories';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
-$categories = $pdo->query("SELECT * FROM categories c INNER JOIN parent_categories pc ON c.parent_category_id = pc.id_parent_category ORDER BY id_category")->fetchAll();
+$categories = $pdo->query("SELECT * FROM categories c INNER JOIN parent_categories pc ON c.parent_category_id = pc.id_parent_category ORDER BY id_category DESC")->fetchAll();
 ?>
 <style>
     .dt-input {
@@ -61,7 +61,7 @@ $categories = $pdo->query("SELECT * FROM categories c INNER JOIN parent_categori
                                     <td><?= $category['slug_category'] ?></td>
                                     <td>
                                         <a href="/admin/categories/edit.php?id=<?= $category['id_category'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/categories/delete.php?id=<?= $category['id_category'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/categories/delete.php?id=<?= $category['id_category'] ?>" onclick="confirmDelete(event)" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
@@ -83,14 +83,4 @@ include_once './../partials/footer.php';
     $(document).ready(function() {
         $('#manajemen-table').DataTable();
     });
-
-    function confirmDelete(message) {
-        const result = confirm(message);
-        if (result) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
 </script>

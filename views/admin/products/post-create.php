@@ -41,7 +41,7 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
 }
 for ($i = 0; $i < count($img_variant_products); $i++) {
     $img_variant_product = $_FILES['img_variant_product'];
-    $file_name = time() . hash('sha256', $img_variant_product['name'][$i]) . '_' . $img_variant_product['name'][$i];
+    $file_name = hash('sha256', $img_variant_product['name'][$i] . microtime()) . '_' . $img_variant_product['name'][$i];
     $upload_file = $upload_directory . $file_name;
     $img_variant_products[$i] = $upload_file;
     $upload_check = move_uploaded_file($img_variant_product['tmp_name'][$i], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
@@ -52,10 +52,20 @@ for ($i = 0; $i < count($img_variant_products); $i++) {
     }
 }
 $sql = "INSERT INTO products (category_id, user_id, name_product, slug_product, description_product) VALUES ('$category_id', '$user_id', '$name', '$slug', '$description')";
-$pdo->query($sql);
+$result = $pdo->query($sql);
+if (!$result) {
+    $_SESSION['error'] = 'Failed to create product';
+    header("Location: /admin/products/create.php");
+    exit;
+}
 $product_id = $pdo->lastInsertId();
 for ($i = 0; $i < count($name_variant_products); $i++) {
     $sql = "INSERT INTO variant_products (product_id, name_variant_product, price_variant_product, stock_variant_product, img_variant_product) VALUES ('$product_id', '$name_variant_products[$i]', '$price_variant_products[$i]', '$stock_variant_products[$i]', '$img_variant_products[$i]')";
-    $pdo->query($sql);
+    $result = $pdo->query($sql);
+    if ($result) {
+        $_SESSION['success'] = 'Product successfully created';
+    } else {
+        $_SESSION['error'] = 'Failed to create product';
+    }
 }
 header('Location: /admin/products');

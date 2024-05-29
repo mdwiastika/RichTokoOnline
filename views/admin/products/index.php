@@ -7,7 +7,7 @@ include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
 $stmt_products = $pdo->prepare("SELECT * FROM products p 
 INNER JOIN categories c ON p.category_id = c.id_category 
-INNER JOIN users u ON p.user_id = u.id ORDER BY id_product");
+INNER JOIN users u ON p.user_id = u.id ORDER BY id_product DESC");
 $stmt_products->execute();
 $products = $stmt_products->fetchAll();
 ?>
@@ -65,7 +65,7 @@ $products = $stmt_products->fetchAll();
                                     <td><?= $product['slug_product'] ?></td>
                                     <td>
                                         <a href="/admin/products/edit.php?id=<?= $product['id_product'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/products/delete.php?id=<?= $product['id_product'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/products/delete.php?id=<?= $product['id_product'] ?>" onclick="confirmDelete(event)" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
@@ -87,14 +87,4 @@ include_once './../partials/footer.php';
     $(document).ready(function() {
         $('#manajemen-table').DataTable();
     });
-
-    function confirmDelete(message) {
-        const result = confirm(message);
-        if (result) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
 </script>

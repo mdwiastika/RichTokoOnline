@@ -22,5 +22,10 @@ if ($image_review) {
     $sql = "UPDATE reviews SET variant_product_id = '$variant_product_id', user_id = '$user_id', star = '$star', description_review = '$description_review' WHERE id_review = '$id_review'";
 }
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$result = $stmt->execute();
+if ($result) {
+    $_SESSION['success'] = 'Review successfully updated';
+} else {
+    $_SESSION['error'] = 'Failed to update review';
+}
 header('Location: /admin/reviews');

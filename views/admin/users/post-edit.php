@@ -29,5 +29,10 @@ if (empty($password)) {
 } else {
     $sql = "UPDATE users SET name = '$name', username = '$username', email = '$email', password = '$password', role = '$role', province = '$province', city = '$city', address = '$address' WHERE id = '$id'";
 }
-$pdo->query($sql);
+$result = $pdo->query($sql);
+if ($result) {
+    $_SESSION['success'] = 'User successfully updated';
+} else {
+    $_SESSION['error'] = 'Failed to update user';
+}
 header('Location: /admin/users');

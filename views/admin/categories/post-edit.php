@@ -17,12 +17,17 @@ if ($check_name) {
 validation_form($name, 'Name Field is required', "/admin/categories/edit.php?id=$id");
 if ($icon['name'] != '') {
     validation_form($icon, 'Icon Field is required', "/admin/categories/edit.php?id=$id");
-    $file_name = hash('sha256', $icon['name']) . '_' . $icon['name'];
+    $file_name = hash('sha256', $icon['name'] . microtime()) . '_' . $icon['name'];
     $upload_file = $upload_directory . $file_name;
     $upload_check = move_uploaded_file($icon['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
     if ($upload_check) {
         $sql = "UPDATE categories SET parent_category_id = '$parent_category_id', name_category = '$name', icon_category = '$upload_file', slug_category = '$slug' WHERE id_category = '$id'";
-        $pdo->query($sql);
+        $result = $pdo->query($sql);
+        if ($result) {
+            $_SESSION['success'] = 'Category successfully updated';
+        } else {
+            $_SESSION['error'] = 'Failed to update category';
+        }
         header('Location: /admin/categories');
     } else {
         $_SESSION['error'] = 'Failed to upload file';
@@ -30,6 +35,11 @@ if ($icon['name'] != '') {
     }
 } else {
     $sql = "UPDATE categories SET parent_category_id = '$parent_category_id', name_category = '$name', slug_category = '$slug' WHERE id_category = '$id'";
-    $pdo->query($sql);
+    $result = $pdo->query($sql);
+    if ($result) {
+        $_SESSION['success'] = 'Category successfully updated';
+    } else {
+        $_SESSION['error'] = 'Failed to update category';
+    }
     header('Location: /admin/categories');
 }

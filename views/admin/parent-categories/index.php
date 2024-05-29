@@ -5,7 +5,7 @@ $sub_title = 'Manajemen Parent Categories';
 include_once './../partials/header.php';
 include_once './../partials/sidebar.php';
 include_once './../../connection/connection.php';
-$parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_parent_category")->fetchAll();
+$parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_parent_category DESC")->fetchAll();
 ?>
 <style>
     .dt-input {
@@ -59,7 +59,7 @@ $parent_categories = $pdo->query("SELECT * FROM parent_categories ORDER BY id_pa
                                     <td><?= $parent_category['slug_parent_category'] ?></td>
                                     <td>
                                         <a href="/admin/parent-categories/edit.php?id=<?= $parent_category['id_parent_category'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/parent-categories/delete.php?id=<?= $parent_category['id_parent_category'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/parent-categories/delete.php?id=<?= $parent_category['id_parent_category'] ?>" onclick="confirmDelete(event)" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
@@ -81,14 +81,4 @@ include_once './../partials/footer.php';
     $(document).ready(function() {
         $('#manajemen-table').DataTable();
     });
-
-    function confirmDelete(message) {
-        const result = confirm(message);
-        if (result) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
 </script>

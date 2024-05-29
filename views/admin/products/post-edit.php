@@ -42,7 +42,12 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
 }
 
 $sql = "UPDATE products SET category_id = '$category_id', user_id = '$user_id', name_product = '$name', slug_product = '$slug', description_product = '$description' WHERE id_product = '$product_id'";
-$pdo->query($sql);
+$result = $pdo->query($sql);
+if (!$result) {
+    $_SESSION['error'] = 'Failed to update product';
+    header("Location: /admin/products/edit.php?id=$product_id");
+    exit;
+}
 $variant_product_id_data = $pdo->query("SELECT id_variant_product FROM variant_products WHERE product_id = '$product_id'")->fetchAll();
 $variant_product_id_data = array_map(function ($item) {
     return $item['id_variant_product'];
@@ -59,7 +64,7 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
     if ($variant_product_id == '') {
         if ($img_variant_products[$i] != '') {
             $img_variant_product = $_FILES['img_variant_product'];
-            $file_name = time() . hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
+            $file_name = hash('sha256', $img_variant_products[$i] . microtime()) . '_' . $img_variant_products[$i];
             $upload_file = $upload_directory . $file_name;
             $upload_check = move_uploaded_file($img_variant_product['tmp_name'][$i], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
             if ($upload_check) {
@@ -75,12 +80,17 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
             header("Location: /admin/products/edit.php?id=$product_id");
         }
         $sql = "INSERT INTO variant_products (product_id, name_variant_product, price_variant_product, stock_variant_product, img_variant_product) VALUES ('$product_id', '$name_variant_products[$i]', '$price_variant_products[$i]', '$stock_variant_products[$i]', '$img_variant_products[$i]')";
-        $pdo->query($sql);
+        $result = $pdo->query($sql);
+        if ($result) {
+            $_SESSION['success'] = 'Product successfully updated';
+        } else {
+            $_SESSION['error'] = 'Failed to update product';
+        }
         continue;
     } else {
         if ($img_variant_products[$i] != '') {
             $img_variant_product = $_FILES['img_variant_product'];
-            $file_name = time() . hash('sha256', $img_variant_products[$i]) . '_' . $img_variant_products[$i];
+            $file_name = hash('sha256', $img_variant_products[$i] . microtime()) . '_' . $img_variant_products[$i];
             $upload_file = $upload_directory . $file_name;
             $upload_check = move_uploaded_file($img_variant_product['tmp_name'][$i], $_SERVER['DOCUMENT_ROOT'] . $upload_file);
             if ($upload_check) {
@@ -95,7 +105,12 @@ for ($i = 0; $i < count($name_variant_products); $i++) {
         } else {
             $sql = "UPDATE variant_products SET name_variant_product = '$name_variant_products[$i]', price_variant_product = '$price_variant_products[$i]', stock_variant_product = '$stock_variant_products[$i]' WHERE id_variant_product = '$variant_product_id'";
         }
-        $pdo->query($sql);
+        $result =  $pdo->query($sql);
+        if ($result) {
+            $_SESSION['success'] = 'Product successfully updated';
+        } else {
+            $_SESSION['error'] = 'Failed to update product';
+        }
     }
 }
 

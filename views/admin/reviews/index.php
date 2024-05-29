@@ -82,7 +82,7 @@ $reviews = $stmt_reviews->fetchAll();
                                     </td>
                                     <td>
                                         <a href="/admin/reviews/edit.php?id=<?= $review['id_review'] ?>" class="btn btn-sm btn-warning text-white fw-bold rounded-3"><i class="bi bi-pen"></i> Edit</a>
-                                        <a href="/admin/reviews/delete.php?id=<?= $review['id_review'] ?>" onclick="confirmDelete('Are you sure you want to delete the data?')" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
+                                        <a href="/admin/reviews/delete.php?id=<?= $review['id_review'] ?>" onclick="confirmDelete(event)" class="btn btn-sm btn-danger fw-bold rounded-3"><i class="bi bi-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php
@@ -104,14 +104,4 @@ include_once './../partials/footer.php';
     $(document).ready(function() {
         $('#manajemen-table').DataTable();
     });
-
-    function confirmDelete(message) {
-        const result = confirm(message);
-        if (result) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
 </script>

@@ -1,6 +1,6 @@
 <footer class="app-footer">
     <div class="float-end d-none d-sm-inline">Anything you want</div><strong>
-        Copyright &copy; 2014-2024&nbsp;
+        Copyright &copy; 2024&nbsp;
         <a href="https://mdwitech.vercel.app" target="_blank" class="text-decoration-none">Mdwishop</a>.
     </strong>
     All rights reserved.
@@ -33,7 +33,51 @@
         }
     });
 </script> <!--end::OverlayScrollbars Configure--> <!-- OPTIONAL SCRIPTS --> <!-- apexcharts -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script> -->
+<?php
+if (isset($_SESSION['success'])) {
+    echo '<script>
+        Swal.fire({
+            title: "Success!",
+            text: "' . $_SESSION['success'] . '",
+            icon: "success",
+            confirmButtonText: "OK"
+        });
+    </script>';
+    unset($_SESSION['success']);
+}
+
+if (isset($_SESSION['error'])) {
+    echo '<script>
+        Swal.fire({
+            title: "Error!",
+            text: "' . $_SESSION['error'] . '",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+    </script>';
+    unset($_SESSION['error']);
+}
+?>
+
+<script>
+    function confirmDelete(element) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to delete this data?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = element.target.href;
+            }
+        });
+    }
+</script>
+</script>
 </body>
 
 </html>

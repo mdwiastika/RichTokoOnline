@@ -21,5 +21,10 @@ if ($image_review) {
     $sql = "INSERT INTO reviews (variant_product_id, user_id, star, description_review) VALUES ('$variant_product_id', '$user_id', '$star', '$description_review')";
 }
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$result = $stmt->execute();
+if ($result) {
+    $_SESSION['success'] = 'Review successfully created';
+} else {
+    $_SESSION['error'] = 'Failed to create review';
+}
 header('Location: /admin/reviews');

@@ -25,5 +25,10 @@ validation_form($province, 'Province Field is required', '/admin/users/create.ph
 validation_form($city, 'City Field is required', '/admin/users/create.php');
 validation_form($address, 'Address Field is required', '/admin/users/create.php');
 $sql = "INSERT INTO users (name, username, email, password, role, province, city, address) VALUES ('$name', '$username', '$email', '$password', '$role', '$province', '$city', '$address')";
-$pdo->query($sql);
+$result =   $pdo->query($sql);
+if ($result) {
+    $_SESSION['success'] = 'User successfully created';
+} else {
+    $_SESSION['error'] = 'Failed to create user';
+}
 header('Location: /admin/users');
