@@ -1,8 +1,8 @@
  <aside class="app-sidebar main-sidebar sidebar-light-primary shadow">
      <div class="sidebar-brand">
          <a href="/admin/dashboard" class="brand-link">
-             <img src="./../../assets/logo-2-no-bg.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow rounded-circle">
-             <span class="brand-text fw-light"><?= $copyright ?></span>
+             <img src="./../../assets/logo-2-no-bg.png" alt="AdminLTE Logo" class="brand-image">
+             <!-- <span class="brand-text fw-light"><?= $copyright ?></span> -->
          </a>
      </div>
      <div class="sidebar-wrapper">

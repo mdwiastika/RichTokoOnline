@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="assets/images/favicon.ico">
     <link href="./../assets/libs/%40mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
-    <link href="./../assets/css/main.css" rel="stylesheet" type="text/css">
+    <link href="./../assets/css/output.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -28,7 +28,7 @@
                         <div class="p-8 lg:px-20">
                             <div class="text-center">
                                 <a href="index.html" class="flex justify-center items-center gap-2">
-                                    <img src="./../assets/logo-2.png" class="w-10 h-auto" alt=""> <span class="font-normal text-xl">MdwiShop</span>
+                                    <img src="./../assets/logo-2-no-bg.png" class="w-40 h-auto" alt="">
                                 </a>
                             </div>
 
