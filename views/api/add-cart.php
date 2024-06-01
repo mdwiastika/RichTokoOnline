@@ -1,10 +1,10 @@
 <?php
 session_start();
 include_once './../connection/connection.php';
-if ($_POST['product_id']) {
+if (isset($_POST['product_id'])) {
     $product_id = $_POST['product_id'];
     $variant_product_id = $pdo->query("SELECT id_variant_product FROM variant_products WHERE product_id = $product_id LIMIT 1")->fetchColumn();
-} elseif ($_POST['variant_product_id']) {
+} elseif (isset($_POST['variant_product_id'])) {
     $variant_product_id = $_POST['variant_product_id'];
 }
 $user_id = $_SESSION['user']['id'];

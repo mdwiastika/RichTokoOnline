@@ -2,6 +2,7 @@
 $title = 'Contact';
 include_once './../partials/header.php';
 $slug_product = $_GET['slug'];
+$update_view = $pdo->query("UPDATE products SET views_product = views_product + 1 WHERE slug_product = '$slug_product'");
 $product = $pdo->query("SELECT * FROM products WHERE slug_product = '$slug_product'")->fetch();
 $variant_items = $pdo->query("SELECT * FROM variant_products WHERE product_id = $product[id_product]")->fetchAll();
 $id_product = $product['id_product'];
@@ -82,7 +83,7 @@ $reviews = $pdo->query("SELECT * FROM reviews r
                                 $stock = $variant_item['stock_variant_product'];
                                 $price = $variant_item['price_variant_product'];
                                 ?>
-                                <a href="javascript:void(0);" onclick="selectItemVariant(this, <?= $stock ?>, <?= $price ?>)" class="inline-flex px-4 py-1 items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white <?= $key == 0 ? 'item-selected' : '' ?>"><?= $variant_item['name_variant_product'] ?></a>
+                                <a href="javascript:void(0);" data-variant-product-id="<?= $variant_item['id_variant_product'] ?>" onclick="selectItemVariant(this, <?= $stock ?>, <?= $price ?>)" class="inline-flex px-4 py-1 items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white <?= $key == 0 ? 'item-selected' : '' ?>"><?= $variant_item['name_variant_product'] ?></a>
                             <?php endforeach; ?>
                         </div>
                     </div><!--end content-->
@@ -99,7 +100,7 @@ $reviews = $pdo->query("SELECT * FROM reviews r
 
                 <div class="mt-4 space-x-1">
                     <a href="#" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Shop Now</a>
-                    <a href="#" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white mt-2">Add to Cart</a>
+                    <a href="javascript:void(0);" onclick="addToCartWithVariantProduct()" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white mt-2">Add to Cart</a>
                 </div>
             </div><!--end content-->
         </div><!--end grid-->
@@ -296,6 +297,36 @@ include_once './../partials/footer.php';
                     Swal.fire({
                         title: 'Error',
                         text: 'Failed to create review',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    }
+
+    function addToCartWithVariantProduct() {
+        const variantItems = document.querySelectorAll('.item-selected');
+        const variantProductId = variantItems[0].getAttribute('data-variant-product-id');
+        $.ajax({
+            url: '/api/add-cart.php',
+            type: 'POST',
+            data: {
+                variant_product_id: variantProductId
+            },
+            success: function(response) {
+                response = JSON.parse(response);
+                if (response.status == 'success') {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Product has been added to cart',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Product failed to add to cart',
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });

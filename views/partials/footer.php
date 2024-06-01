@@ -107,7 +107,7 @@
     function addToCart(product_id) {
         if (<?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>) {
             $.ajax({
-                url: '/controllers/add-cart.php',
+                url: '/api/add-cart.php',
                 type: 'POST',
                 data: {
                     product_id: product_id
