@@ -69,11 +69,10 @@ include_once './../partials/header.php';
                 <p class="text-slate-400 max-w-xl">Kami adalah MdwiShop, sebuah tim yang berfokus pada pengembangan aplikasi e-commerce yang revolusioner. Kami terdiri dari para profesional yang berpengalaman dalam berbagai bidang, mulai dari pengembangan perangkat lunak, desain UI/UX, hingga pemasaran digital.</p>
 
                 <ul class="list-none mt-6 space-x-2">
-                    <li class="inline"><a href="https://dribbble.com/shreethemes" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="dribbble" class="size-5 align-middle" title="dribbble"></i></a></li>
-                    <li class="inline"><a href="http://linkedin.com/company/shreethemes" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="linkedin" class="size-5 align-middle" title="Linkedin"></i></a></li>
-                    <li class="inline"><a href="https://www.facebook.com/shreethemes" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="facebook" class="size-5 align-middle" title="facebook"></i></a></li>
-                    <li class="inline"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="instagram" class="size-5 align-middle" title="instagram"></i></a></li>
-                    <li class="inline"><a href="https://twitter.com/shreethemes" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="twitter" class="size-5 align-middle" title="twitter"></i></a></li>
+                    <li class="inline"><a href="https://www.linkedin.com/in/marcel-dwi-astika-6b93a0260/" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="linkedin" class="size-5 align-middle" title="Linkedin"></i></a></li>
+                    <li class="inline"><a href="https://www.facebook.com/mdwiastika" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="facebook" class="size-5 align-middle" title="facebook"></i></a></li>
+                    <li class="inline"><a href="https://www.instagram.com/marcelastika/" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="instagram" class="size-5 align-middle" title="instagram"></i></a></li>
+                    <li class="inline"><a href="https://twitter.com/mdwiastika" target="_blank" class="inline-flex hover:text-orange-500"><i data-feather="twitter" class="size-5 align-middle" title="twitter"></i></a></li>
                 </ul><!--end icon-->
             </div>
         </div><!--end grid-->
