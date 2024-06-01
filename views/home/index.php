@@ -91,7 +91,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
                     </div>
 
                     <div class="mt-4">
-                        <a href="/product/<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
+                        <a href="/product?slug=<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
                         <div class="flex justify-between items-center mt-1">
                             <p>Rp. <?= number_format($product['price_product'], 0, ',', '.') ?></p>
                             <ul class="font-medium text-amber-400 list-none">
@@ -138,7 +138,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
             </div>
 
             <div class="md:text-end hidden md:block">
-                <a href="shop-grid.html" class="text-slate-400 hover:text-orange-500">See More Items <i class="mdi mdi-arrow-right"></i></a>
+                <a href="/products" class="text-slate-400 hover:text-orange-500">See More Items <i class="mdi mdi-arrow-right"></i></a>
             </div>
         </div><!--end grid-->
 
@@ -173,7 +173,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
                     </div>
 
                     <div class="mt-4">
-                        <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
+                        <a href="/product?slug=<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
                         <div class="flex justify-between items-center mt-1">
                             <p>Rp. <?= number_format($product['price_product'], 0, ',', '.') ?></p>
                             <ul class="font-medium text-amber-400 list-none">

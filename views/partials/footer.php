@@ -98,10 +98,10 @@
     </div>
 </footer>
 <a href="#" onclick="topFunction()" id="back-to-top" class="back-to-top fixed hidden text-lg rounded-full z-10 bottom-5 end-5 size-9 text-center bg-orange-500 text-white justify-center items-center"><i class="mdi mdi-arrow-up"></i></a>
-<script src="assets/libs/tobii/js/tobii.min.js"></script>
-<script src="assets/libs/feather-icons/feather.min.js"></script>
-<script src="assets/js/plugins.init.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="/assets/libs/tobii/js/tobii.min.js"></script>
+<script src="/assets/libs/feather-icons/feather.min.js"></script>
+<script src="/assets/js/plugins.init.js"></script>
+<script src="/assets/js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     function addToCart(product_id) {

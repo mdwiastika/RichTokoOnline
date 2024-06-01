@@ -135,7 +135,7 @@ $total_pagination = ceil($total_data / $limit);
                             </div>
 
                             <div class="mt-4">
-                                <a href="/product/<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
+                                <a href="/product?slug=<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
                                 <div class="flex justify-between items-center mt-1">
                                     <p>Rp. <?= number_format($product['price_product'], 0, ',', '.') ?></p>
                                     <ul class="font-medium text-amber-400 list-none">
