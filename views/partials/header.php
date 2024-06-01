@@ -31,7 +31,7 @@ $parent_categories = $pdo->query("SELECT
     <meta content="Shop, Fashion, eCommerce, Cart, Shop Cart, tailwind css, Admin, Landing" name="keywords">
     <meta name="author" content="Shreethemes">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="assets/logo-2.png">
     <link href="assets/libs/tobii/css/tobii.min.css" rel="stylesheet">
     <!-- Main Css -->
     <link href="assets/libs/%40mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
@@ -40,14 +40,14 @@ $parent_categories = $pdo->query("SELECT
 </head>
 
 <body class="">
-    <div id="preloader">
+    <!-- <div id="preloader">
         <div id="status">
             <div class="spinner">
                 <div class="double-bounce1"></div>
                 <div class="double-bounce2"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="tagline bg-slate-900">
         <div class="container relative">
             <div class="grid grid-cols-1">
@@ -61,7 +61,7 @@ $parent_categories = $pdo->query("SELECT
         <div class="container relative">
             <a class="logo" href="index.html">
                 <div>
-                    <img src="assets/images/logo-dark.png" class="h-[22px] inline-block" alt="">
+                    <img src="assets/logo-2-no-bg.png" class="h-[50px] inline-block" alt="">
                 </div>
             </a>
 
@@ -88,9 +88,9 @@ $parent_categories = $pdo->query("SELECT
                     </a>
                 </li>
 
-                <li class="dropdown inline-block relative ps-0.5">
+                <li class="dropdown inline-block relative ps-3">
                     <button data-dropdown-toggle="dropdown" class="dropdown-toggle items-center" type="button">
-                        <span class="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-full border border-orange-500 bg-orange-500 text-white"><img src="assets/images/client/16.jpg" class="rounded-full" alt=""></span>
+                        <span class="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-full border border-orange-500 bg-orange-500 text-white"><img src="assets/images/ms-user.png" class="rounded-full" alt=""></span>
                     </button>
                     <!-- Dropdown menu -->
                     <div class="dropdown-menu absolute end-0 m-0 mt-4 z-10 w-48 rounded-md overflow-hidden bg-white shadow hidden" onclick="event.stopPropagation();">

@@ -1,6 +1,21 @@
 <?php
 $title = 'Home';
 include_once './../partials/header.php';
+$categories = $pdo->query("SELECT * FROM categories ORDER BY id_category DESC LIMIT 5")->fetchAll();
+$latest_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS price_product, MAX(v.img_variant_product) AS image_product
+                                FROM products p
+                                LEFT JOIN variant_products v ON p.id_product = v.product_id
+                                WHERE v.id_variant_product = (SELECT id_variant_product FROM variant_products WHERE product_id = p.id_product ORDER BY id_variant_product ASC LIMIT 1)
+                                GROUP BY p.id_product
+                                ORDER BY p.id_product DESC
+                                LIMIT 8")->fetchAll();
+$popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS price_product, MAX(v.img_variant_product) AS image_product
+                                FROM products p
+                                LEFT JOIN variant_products v ON p.id_product = v.product_id
+                                WHERE v.id_variant_product = (SELECT id_variant_product FROM variant_products WHERE product_id = p.id_product ORDER BY id_variant_product ASC LIMIT 1)
+                                GROUP BY p.id_product
+                                ORDER BY p.views_product DESC
+                                LIMIT 4")->fetchAll();
 ?>
 <section class="relative md:flex table w-full items-center md:h-screen py-36 bg-emerald-500/5  bg-opacity-50 bg-[url('./../images/hero/ms-hero.jpg')] md:bg-top bg-center bg-no-repeat bg-cover">
     <div class="absolute top-0 left-0 w-full h-full bg-white opacity-70 backdrop-filter backdrop-blur"></div>
@@ -12,7 +27,7 @@ include_once './../partials/header.php';
                 <p class="text-lg capitalize">Get the Best Deals for Fashion, Electronics, and More!</p>
 
                 <div class="mt-6">
-                    <a href="#" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-center bg-slate-900 text-white rounded-md">Shop Now <i class="mdi mdi-arrow-right"></i></a>
+                    <a href="/products" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-center bg-slate-900 text-white rounded-md">Shop Now <i class="mdi mdi-arrow-right"></i></a>
                 </div>
             </div>
         </div><!--end grid-->
@@ -24,428 +39,71 @@ include_once './../partials/header.php';
 <section class="relative md:py-24 py-16">
     <div class="container relative">
         <div class="grid grid-cols-1 justify-center text-center mb-6">
-            <h5 class="font-semibold text-3xl leading-normal mb-4">Shop The Collections</h5>
-            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular collections</p>
+            <h5 class="font-semibold text-3xl leading-normal mb-4">Browse our Categories</h5>
+            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular categories< /p>
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 pt-6 gap-6">
-            <a href="#" class="text-center hover:text-orange-500">
-                <img src="assets/images/categories/mens-ware.jpg" class="rounded-full shadow" alt="">
-                <span class="text-xl font-medium mt-3 block">Men's Wear</span>
-            </a>
-
-            <a href="#" class="text-center hover:text-orange-500">
-                <img src="assets/images/categories/ladies-ware.jpg" class="rounded-full shadow" alt="">
-                <span class="text-xl font-medium mt-3 block">Ladies Wear</span>
-            </a>
-
-            <a href="#" class="text-center hover:text-orange-500">
-                <img src="assets/images/categories/kids-ware.jpg" class="rounded-full shadow" alt="">
-                <span class="text-xl font-medium mt-3 block">Kids Wear</span>
-            </a>
-
-            <a href="#" class="text-center hover:text-orange-500">
-                <img src="assets/images/categories/smart-watch.jpg" class="rounded-full shadow" alt="">
-                <span class="text-xl font-medium mt-3 block">Smart Watch</span>
-            </a>
-
-            <a href="#" class="text-center hover:text-orange-500">
-                <img src="assets/images/categories/sunglasses.jpg" class="rounded-full shadow" alt="">
-                <span class="text-xl font-medium mt-3 block">Sunglasses</span>
-            </a>
+            <?php foreach ($categories as $category) : ?>
+                <div class="group">
+                    <a href="/products?category=<?= $category['slug_category'] ?>" class="text-center hover:text-orange-500 flex flex-col justify-center items-center gap-4">
+                        <img src="<?= $category['icon_category'] ?>" class="shadow max-w-32 h-auto group-hover:scale-105 transition-all" alt="">
+                        <span class="text-xl font-medium mt-3 block"><?= $category['name_category'] ?></span>
+                    </a>
+                </div>
+            <?php endforeach; ?>
         </div><!--end grid-->
     </div><!--end container-->
 
     <div class="container relative md:mt-24 mt-16">
         <div class="grid grid-cols-1 justify-center text-center mb-6">
-            <h5 class="font-semibold text-3xl leading-normal mb-4">New Arrival Products</h5>
-            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular collections</p>
+            <h5 class="font-semibold text-3xl leading-normal mb-4">Our Latest Products</h5>
+            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular categories</p>
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 pt-6 gap-6">
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/black-print-t-shirt.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-orange-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">-40% Off</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Black Print T-Shirt</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
+            <?php foreach ($latest_products as $product) : ?>
+                <?php
+                $id_product = $product['id_product'];
+                $rating_product = $pdo->query("SELECT star AS rating_product FROM reviews r
+                                                INNER JOIN variant_products vp ON r.variant_product_id = vp.id_variant_product
+                                                WHERE vp.product_id = $id_product")->fetchAll();
+                $average_rating = 0;
+                $total_ratings = count($rating_product);
+                $average_rating = 0;
+                if ($total_ratings > 0) {
+                    foreach ($rating_product as $rating) {
+                        $star = explode('_', $rating['rating_product']);
+                        $average_rating += intval($star[1]);
+                    }
+                    $average_rating /= $total_ratings;
+                }
+                ?>
+                <div class="group">
+                    <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
+                        <img src="<?= $product['image_product'] ?>" class="group-hover:scale-110 duration-500 h-80 w-full object-cover" alt="">
+                        <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
+                            <a href="/cart" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
+                        </div>
+                        <ul class="list-none absolute top-[10px] start-4">
+                            <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
                         </ul>
                     </div>
-                </div>
-            </div><!--end content-->
 
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/fashion-shoes-sneaker.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Fashion Shoes Sneaker</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
+                    <div class="mt-4">
+                        <a href="/product/<?= $product['slug_product'] ?>" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
+                        <div class="flex justify-between items-center mt-1">
+                            <p>Rp. <?= number_format($product['price_product'], 0, ',', '.') ?></p>
+                            <ul class="font-medium text-amber-400 list-none">
+                                <?php for ($i = 0; $i < 5; $i++) : ?>
+                                    <li class="inline"><i class="mdi mdi-star<?= $i < $average_rating ? '' : '-outline' ?>"></i></li>
+                                <?php endfor; ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div><!--end content-->
+            <?php endforeach; ?>
 
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/men-white-espadrilles-slip-shoes.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Mens White Slip Shoes</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/luxurious-bag.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Ladies Luxurious Bag</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/ladies-1.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Ladies Green Top</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/ladies-2.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Ladies Onepiece Wear</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/mens-jecket.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">Featured</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Mens Brown Jecket</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/sweater-t-shirt.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Sweater T-Shirt</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/trendy-t-shirt2.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Trendy T-shirt</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/men-sun-glasses.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Men Sun Glasses</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/women-s-white-low-heel-shoes.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-orange-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">-25% Off</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Women White Low Heel Shoes</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/casual-men-shorts.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">Featured</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Black Print T-Shirt</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
         </div><!--end grid-->
     </div><!--end container-->
 
@@ -465,7 +123,7 @@ include_once './../partials/header.php';
                         </ul>
                     </div>
                     <div class="mt-4">
-                        <a href="sale.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-center bg-white text-orange-500 rounded-md"><i class="mdi mdi-cart-outline"></i> Shop Now</a>
+                        <a href="/products" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-center bg-white text-orange-500 rounded-md"><i class="mdi mdi-cart-outline"></i> Shop Now</a>
                     </div>
                 </div><!--end grid-->
             </div>
@@ -476,7 +134,7 @@ include_once './../partials/header.php';
         <div class="grid items-end md:grid-cols-2 mb-6">
             <div class="md:text-start text-center">
                 <h5 class="font-semibold text-3xl leading-normal mb-4">Popular Items</h5>
-                <p class="text-slate-400 max-w-xl">Popular items in this week</p>
+                <p class="text-slate-400 max-w-xl">Popular items in MdwiShop</p>
             </div>
 
             <div class="md:text-end hidden md:block">
@@ -485,134 +143,53 @@ include_once './../partials/header.php';
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 pt-6 gap-6">
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/luxurious-bag2.jpg" class="group-hover:scale-110 duration-500" alt="">
+            <?php foreach ($popular_products as $product) : ?>
+                <?php
+                $id_product = $product['id_product'];
+                $rating_product = $pdo->query("SELECT star AS rating_product FROM reviews r
+                                                    INNER JOIN variant_products vp ON r.variant_product_id = vp.id_variant_product
+                                                    WHERE vp.product_id = $id_product")->fetchAll();
+                $average_rating = 0;
+                $total_ratings = count($rating_product);
+                $average_rating = 0;
+                if ($total_ratings > 0) {
+                    foreach ($rating_product as $rating) {
+                        $star = explode('_', $rating['rating_product']);
+                        $average_rating += intval($star[1]);
+                    }
+                    $average_rating /= $total_ratings;
+                }
+                ?>
+                <div class="group">
+                    <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
+                        <img src="<?= $product['image_product'] ?>" class="group-hover:scale-110 duration-500 h-80 w-full object-cover" alt="">
 
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-
-                    <ul class="list-none absolute top-[10px] start-4">
-                        <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Orange Luxurious Bag</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
+                        <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
+                            <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
+                        </div>
+                        <ul class="list-none absolute top-[10px] start-4">
+                            <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
                         </ul>
                     </div>
-                </div>
-            </div><!--end content-->
 
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/smart-watch.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Smart Watch</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
+                    <div class="mt-4">
+                        <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium"><?= $product['name_product'] ?></a>
+                        <div class="flex justify-between items-center mt-1">
+                            <p>Rp. <?= number_format($product['price_product'], 0, ',', '.') ?></p>
+                            <ul class="font-medium text-amber-400 list-none">
+                                <?php for ($i = 0; $i < 5; $i++) : ?>
+                                    <li class="inline"><i class="mdi mdi-star<?= $i < $average_rating ? '' : '-outline' ?>"></i></li>
+                                <?php endfor; ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/white-sandals-summer-footwear.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">White Sandals</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
-
-            <div class="group">
-                <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
-                    <img src="assets/images/shop/ladies-skirt-pair.jpg" class="group-hover:scale-110 duration-500" alt="">
-
-                    <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                        <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
-                    </div>
-
-                    <ul class="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
-                        <li><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="heart" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="shop-item-detail.html" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="eye" class="size-4"></i></a></li>
-                        <li class="mt-1"><a href="javascript:void(0)" class="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"><i data-feather="bookmark" class="size-4"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="product-detail-one.html" class="hover:text-orange-500 text-lg font-medium">Ladies Skirt</a>
-                    <div class="flex justify-between items-center mt-1">
-                        <p>$16.00 <del class="text-slate-400">$21.00</del></p>
-                        <ul class="font-medium text-amber-400 list-none">
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                            <li class="inline"><i class="mdi mdi-star"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!--end content-->
+            <?php endforeach; ?>
         </div><!--end grid-->
 
         <div class="grid grid-cols-1 mt-6">
             <div class="text-center md:hidden block">
-                <a href="shop-grid.html" class="text-slate-400 hover:text-orange-500">See More Items <i class="mdi mdi-arrow-right"></i></a>
+                <a href="/products" class="text-slate-400 hover:text-orange-500">See More Items <i class="mdi mdi-arrow-right"></i></a>
             </div>
         </div>
     </div><!--end container-->
