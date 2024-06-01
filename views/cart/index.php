@@ -53,7 +53,7 @@ if (!isset($_SESSION['user'])) {
                         <tbody>
                             <?php foreach ($carts as $cart) : ?>
                                 <tr class="bg-white dark:bg-slate-900">
-                                    <td class="p-4"><a href="#"><i class="mdi mdi-window-close text-red-600"></i></a></td>
+                                    <td class="p-4"><a href="javascript:void(0);" onclick="removeCart(<?= $cart['id_cart'] ?>)"><i class="mdi mdi-window-close text-red-600"></i></a></td>
                                     <td class="p-4">
                                         <span class="flex items-center">
                                             <img src="<?= $cart['img_variant_product'] ?>" class="rounded shadow dark:shadow-gray-800 w-12" alt="">
@@ -155,5 +155,44 @@ include_once './../partials/footer.php';
                 console.error('Error:', error);
             }
         });
+    }
+
+    function removeCart(idCart) {
+        const url = '/api/remove-cart.php';
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete this data?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id_cart: idCart
+                    },
+                    success: function(result) {
+                        result = JSON.parse(result);
+                        if (result.status === 'success') {
+                            console.log('Success:', result);
+                            $('#parent-refresh').load(location.href + ' #cart-refresh');
+                        } else if (result.status === 'error') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: result.message,
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
     }
 </script>

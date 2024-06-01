@@ -308,11 +308,13 @@ include_once './../partials/footer.php';
     function addToCartWithVariantProduct() {
         const variantItems = document.querySelectorAll('.item-selected');
         const variantProductId = variantItems[0].getAttribute('data-variant-product-id');
+        const quantity = document.getElementById('quantity').value;
         $.ajax({
             url: '/api/add-cart.php',
             type: 'POST',
             data: {
-                variant_product_id: variantProductId
+                variant_product_id: variantProductId,
+                quantity: quantity,
             },
             success: function(response) {
                 response = JSON.parse(response);
@@ -326,7 +328,7 @@ include_once './../partials/footer.php';
                 } else {
                     Swal.fire({
                         title: 'Error!',
-                        text: 'Product failed to add to cart',
+                        text: response.message,
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });

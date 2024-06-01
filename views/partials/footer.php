@@ -110,7 +110,8 @@
                 url: '/api/add-cart.php',
                 type: 'POST',
                 data: {
-                    product_id: product_id
+                    product_id: product_id,
+                    quantity: 1,
                 },
                 success: function(response) {
                     response = JSON.parse(response);
@@ -124,7 +125,7 @@
                     } else {
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Product failed to add to cart',
+                            text: response.message,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
