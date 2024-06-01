@@ -102,6 +102,40 @@
 <script src="assets/libs/feather-icons/feather.min.js"></script>
 <script src="assets/js/plugins.init.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    function addToCart(product_id) {
+        if (<?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>) {
+            $.ajax({
+                url: '/controllers/add-cart.php',
+                type: 'POST',
+                data: {
+                    product_id: product_id
+                },
+                success: function(response) {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Product has been added to cart',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Product failed to add to cart',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+            });
+        } else {
+            window.location.href = '/auth/login.php';
+        }
+    }
+</script>
 </body>
 
 </html>

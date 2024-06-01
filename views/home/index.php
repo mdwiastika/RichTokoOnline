@@ -40,7 +40,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
     <div class="container relative">
         <div class="grid grid-cols-1 justify-center text-center mb-6">
             <h5 class="font-semibold text-3xl leading-normal mb-4">Browse our Categories</h5>
-            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular categories< /p>
+            <p class="text-slate-400 max-w-xl mx-auto">Shop the latest products from the most popular categories</p>
         </div><!--end grid-->
 
         <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 pt-6 gap-6">
@@ -83,7 +83,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
                     <div class="relative overflow-hidden shadow group-hover:shadow-lg group-hover rounded-md duration-500">
                         <img src="<?= $product['image_product'] ?>" class="group-hover:scale-110 duration-500 h-80 w-full object-cover" alt="">
                         <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                            <a href="/cart" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart(<?= $id_product ?>)" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
                         </div>
                         <ul class="list-none absolute top-[10px] start-4">
                             <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>
@@ -165,7 +165,7 @@ $popular_products = $pdo->query("SELECT p.*, MIN(v.price_variant_product) AS pri
                         <img src="<?= $product['image_product'] ?>" class="group-hover:scale-110 duration-500 h-80 w-full object-cover" alt="">
 
                         <div class="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                            <a href="shop-cart.html" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart(<?= $id_product ?>)" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center bg-slate-900 text-white w-full rounded-md">Add to Cart</a>
                         </div>
                         <ul class="list-none absolute top-[10px] start-4">
                             <li><a href="javascript:void(0)" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded h-5">New</a></li>

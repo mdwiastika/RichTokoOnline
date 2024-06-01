@@ -35,7 +35,11 @@ $parent_categories = $pdo->query("SELECT
     <link href="assets/libs/tobii/css/tobii.min.css" rel="stylesheet">
     <!-- Main Css -->
     <link href="assets/libs/%40mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="assets/css/output.css?modified=<?= microtime() ?>" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -126,14 +130,14 @@ $parent_categories = $pdo->query("SELECT
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu">
-                    <li class="has-submenu parent-menu-item">
+                    <li class="has-submenu parent-menu-item <?= $title == 'Home' ? 'active' : '' ?>">
                         <a href="/">Home</a>
                     </li>
 
-                    <li class="has-submenu parent-parent-menu-item">
+                    <li class="has-submenu parent-parent-menu-item <?= $title == 'Products' ? 'active' : '' ?>">
                         <a href="/products">Products</a>
                     </li>
-                    <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)"> Category </a><span class="menu-arrow"></span>
+                    <li class="has-submenu parent-parent-menu-item <?= $title == 'Categories' ? 'active' : '' ?>"><a href="javascript:void(0)"> Category </a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <?php foreach ($parent_categories as $parent_category) : ?>
                                 <li class="has-submenu parent-menu-item">
@@ -149,8 +153,8 @@ $parent_categories = $pdo->query("SELECT
                             <?php endforeach; ?>
                         </ul>
                     </li>
-                    <li><a href="/about-us" class="sub-menu-item">About Us</a></li>
-                    <li><a href="/contact" class="sub-menu-item">Contact</a></li>
+                    <li><a href="/about-us" class="sub-menu-item <?= $title == 'About Us' ? 'active' : '' ?>">About Us</a></li>
+                    <li><a href="/contact" class="sub-menu-item <?= $title == 'Contact' ? 'active' : '' ?>">Contact</a></li>
                 </ul><!--end navigation menu-->
             </div><!--end navigation-->
         </div><!--end container-->
