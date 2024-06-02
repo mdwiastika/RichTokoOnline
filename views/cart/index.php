@@ -37,7 +37,7 @@ if (!isset($_SESSION['user'])) {
         WHERE c.user_id = $user_id
         ORDER BY c.id_cart")->fetchAll();
         ?>
-        <div class="container relative">
+        <form class="container relative" method="post" action="/checkout">
             <div class="grid lg:grid-cols-1">
                 <div class="relative overflow-x-auto shadow dark:shadow-gray-800 rounded-md">
                     <table class="w-full text-start">
@@ -53,7 +53,10 @@ if (!isset($_SESSION['user'])) {
                         <tbody>
                             <?php foreach ($carts as $cart) : ?>
                                 <tr class="bg-white dark:bg-slate-900">
-                                    <td class="p-4"><a href="javascript:void(0);" onclick="removeCart(<?= $cart['id_cart'] ?>)"><i class="mdi mdi-window-close text-red-600"></i></a></td>
+                                    <td class="p-4 flex justify-center items-center gap-2">
+                                        <input type="checkbox" onclick="setDataFormSelected()" name="selected_cart[]" value="<?= $cart['id_cart'] ?>" checked>
+                                        <a href="javascript:void(0);" onclick="removeCart(<?= $cart['id_cart'] ?>)"><i class="mdi mdi-window-close text-red-600"></i></a>
+                                    </td>
                                     <td class="p-4">
                                         <span class="flex items-center">
                                             <img src="<?= $cart['img_variant_product'] ?>" class="rounded shadow dark:shadow-gray-800 w-12" alt="">
@@ -81,7 +84,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
                     <div class="lg:col-span-9 md:order-1 order-3">
                         <div class="space-x-1">
-                            <a href="#" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Checkout Now</a>
+                            <button type="submit" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Checkout Now</button>
                         </div>
                     </div>
 
@@ -92,7 +95,7 @@ if (!isset($_SESSION['user'])) {
                             foreach ($carts as $cart) {
                                 $subtotal += $cart['price_variant_product'] * $cart['quantity'];
                             }
-                            $taxes = $subtotal * 0.1;
+                            $taxes = $subtotal * 0.05;
                             $total = $subtotal + $taxes;
                             ?>
                             <li class="flex justify-between p-4">
@@ -111,7 +114,7 @@ if (!isset($_SESSION['user'])) {
                     </div>
                 </div>
             </div>
-        </div><!--end container-->
+        </form><!--end container-->
     </section><!--end section-->
 </section>
 <!-- End -->
@@ -121,6 +124,9 @@ include_once './../partials/footer.php';
 ?>
 <script>
     function changeQuantity(element, cartId, action) {
+        element.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.addEventListener('submit', function(event) {
+            event.preventDefault();
+        });
         if (action === 'increment') {
             element.parentNode.querySelector('input[type=number]').stepUp();
         } else if (action === 'decrement') {
