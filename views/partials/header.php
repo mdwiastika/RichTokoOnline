@@ -109,6 +109,14 @@ $parent_categories = $pdo->query("SELECT
                                 ?>
                                 <p class="text-slate-400 pt-2 px-4">Welcome. <?= $name ?> </p>
                             </li>
+                            <?php if (isset($_SESSION['user'])) : ?>
+                                <li>
+                                    <a href="/my-profile" class="flex items-center font-medium py-2 px-4 hover:text-orange-500"><i data-feather="user" class="h-4 w-4 me-2"></i>My Profile</a>
+                                </li>
+                                <li>
+                                    <a href="/history-transaction" class="flex items-center font-medium py-2 px-4 hover:text-orange-500"><i data-feather="credit-card" class="h-4 w-4 me-2"></i>Transaction</a>
+                                </li>
+                            <?php endif; ?>
                             <li>
                                 <?php
                                 if (isset($_SESSION['user'])) {
