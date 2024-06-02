@@ -99,7 +99,6 @@ $reviews = $pdo->query("SELECT * FROM reviews r
                 </div><!--end grid-->
 
                 <div class="mt-4 space-x-1">
-                    <a href="#" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Shop Now</a>
                     <a href="javascript:void(0);" onclick="addToCartWithVariantProduct()" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white mt-2">Add to Cart</a>
                 </div>
             </div><!--end content-->

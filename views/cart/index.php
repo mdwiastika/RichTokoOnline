@@ -83,9 +83,11 @@ if (!isset($_SESSION['user'])) {
 
                 <div class="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
                     <div class="lg:col-span-9 md:order-1 order-3">
-                        <div class="space-x-1">
-                            <button type="submit" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Checkout Now</button>
-                        </div>
+                        <?php if (count($carts) > 0) : ?>
+                            <div class="space-x-1">
+                                <button type="submit" class="py-2 px-5 inline-block font-semibold tracking-wide align-middle text-base text-center bg-orange-500 text-white rounded-md mt-2">Checkout Now</button>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="lg:col-span-3 md:order-2 order-1">

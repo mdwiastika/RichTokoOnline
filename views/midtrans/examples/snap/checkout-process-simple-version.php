@@ -12,13 +12,16 @@ include_once './../../../connection/connection.php';
 session_start();
 Config::$serverKey = 'SB-Mid-server-oqul9_MlVfj70z1CJFQEiBL1';
 Config::$clientKey = 'SB-Mid-client-tpYRzAqM1pmeORCI';
+if (!isset($_POST['username'])) {
+    header('Location: /history-transaction');
+}
 $username = $_POST['username'];
 $email = $_POST['email'];
 $user_id = $_SESSION['user']['id'];
 $phone_number = $_POST['phone_number'];
 $total_price = $_POST['total_price'];
 $shipping_price = $_POST['ongkir'];
-$status = 'Pending';
+$status = 'Confirmed';
 $address = $_POST['address'];
 $external_id_transaction_previous = $pdo->query("SELECT external_id FROM transactions ORDER BY id_transaction DESC LIMIT 1")->fetchColumn();
 $external_id = substr($external_id_transaction_previous, 3) + 1;
@@ -32,6 +35,7 @@ $carts_seelcted = $pdo->query("SELECT * FROM carts c
                                 WHERE id_cart IN ($implode_cart_id)")->fetchAll();
 foreach ($carts_seelcted as $cart) {
     $create_transaction_detail = "INSERT INTO transaction_details (transaction_id, variant_product_id, quantity) VALUES ($transaction_id, " . $cart['variant_product_id'] . ", " . $cart['quantity'] . ");";
+    $remove_stock_variant_product = $pdo->query("UPDATE variant_products SET stock_variant_product = stock_variant_product - " . $cart['quantity'] . " WHERE id_variant_product = " . $cart['variant_product_id']);
     $pdo->query($create_transaction_detail);
 }
 $remove_cart = $pdo->query("DELETE FROM carts WHERE id_cart IN ($implode_cart_id)");
@@ -48,15 +52,15 @@ $transaction_details = array(
     'gross_amount' => $total_price, // no decimal allowed for creditcard
 );
 // Optional
-$item_details = array();
-foreach ($carts_seelcted as $cart) {
-    $item_details[] = array(
-        'id' => $cart['variant_product_id'],
-        'price' => $cart['price_variant_product'],
-        'quantity' => $cart['quantity'],
-        'name' => $cart['name_product'],
-    );
-}
+// $item_details = array();
+// foreach ($carts_seelcted as $cart) {
+//     $item_details[] = array(
+//         'id' => $cart['variant_product_id'],
+//         'price' => $cart['price_variant_product'],
+//         'quantity' => $cart['quantity'],
+//         'name' => $cart['name_product'],
+//     );
+// }
 // Optional
 $customer_details = array(
     'first_name'    => "$username",
@@ -67,7 +71,7 @@ $customer_details = array(
 $transaction = array(
     'transaction_details' => $transaction_details,
     'customer_details' => $customer_details,
-    'item_details' => $item_details,
+    // 'item_details' => $item_details,
 );
 
 $snap_token = '';
@@ -97,7 +101,7 @@ function printExampleWarningMessage()
 <html>
 
 <body>
-    <button id="pay-button">Pay!</button>
+    <button id="pay-button" style="opacity:0;">Pay!</button>
     <!-- TODO: Remove ".sandbox" from script src URL for production environment. Also input your client key in "data-client-key" -->
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?php echo Config::$clientKey; ?>"></script>
     <script type="text/javascript">
